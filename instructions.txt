@@ -1,0 +1,141 @@
+1. INSTALL PIP ON UBUNTU
+--------------------------
+sudo apt-get -y install python-pip
+pip -V //to check pip version installed
+pip --help
+pip install packageName
+
+$ pip install SomePackage # latest version
+$ pip install SomePackage==1.0.4 # specific version
+$ pip install 'SomePackage>=1.0.4' # minimum version
+
+To search python package type:
+
+pip search packageName
+
+upgradig pip
+sudo pip install pip --upgrade
+
+2. INSTALLING VIRTUALENV
+sudo pip install virtualenv
+sudo mkdir TryDjango19
+cd TryDjango
+sudo virtualenv .
+
+pip freeze
+
+3. INSTALLING DJANGO INSIDE TryDjango Folder
+sudo pip install django==1.9
+//sudo pip uninstall django
+//sudo pip install Django
+//sudo pip install Django --upgrade
+
+4. CREATING A NEW PROJECT IN TryDjango Folder
+sudo django-admin.py startproject trydjango19
+ls
+cd trydjango19
+sudo python manage.py runserver
+
+localhost:8000
+if you want to change port do this
+sudo python manage.py runserver 8888
+
+5. OPEN PROJECT IN SUBLIME TEXT
+project->save project as
+project->add folder to project
+rename TryDjango19/trydjango19 to TryDjango19/src
+
+6. MAKING MIGRATIONS
+python manage.py migrate
+
+7. CREATE SUPERUSER
+python manage.py createsuperuser
+admin
+dev.lovepreetsingh@gmail.com
+password123
+
+django automatically create a file db.sqlite3 for us. In our trydjango19 folder there is a file named 'setting.py'.
+It says we are using this file as our database.
+
+8. ADMIN PATH
+localhost:8000/admin
+
+to see commands for manage.py
+python manage.py
+
+we have file urls.py in trydjango folder. It contain route for admin. wsgi.py is used in deployment.
+
+9. FIRST APP AND MODEL
+python manage.py startapp posts
+
+a new folder posts is created inside src folder
+the files inside posts folder are
+migrations folder
+__init__.py
+admin.py
+apps.py
+models.py
+tests.py
+views.py
+
+open models.py and create your first model Post
+now go to setting.php file under trydjango19 folder and under installed app add 'posts',
+
+now do 
+python manage.py migrate
+we will get a error like
+"Your models have changes that are not yet reflected in a migration, and so won't be applied.
+  Run 'manage.py makemigrations' to make new migrations, and then re-run 'manage.py migrate' to apply them."
+
+
+to do this we need to do this first
+python manage.py makemigrations  // hey db these are the changes that were made
+and then do
+python manage.py migrate // hey db apply the changes to the db now
+now we have 'posts' model in our database
+
+read django model field reference
+
+10. BRINGING 'POSTS' MODEL INTO THE ADMIN
+open admin.py inside posts folder beside the models.py file and import the 'Post' model there
+and then register the 'Post' model using the function
+
+admin.site.register(Post)
+
+open admin panel in browser and you will see Post table under 'posts' app
+
+
+11. CUSTOMIZING ADMIN
+read ModelAdmin options
+open admin.py under trydjango19 folder and makde ModelAdmin for Post Table
+We declare a class name PostModelAdmin for customizing our Post Table and pass PostModelAdmin as second arguments to 
+
+admin.site.register(Post, PostModelAdmin)
+
+12. CRUD
+we perform following operation on db
+Create  -- Make new 
+retrieve -- Get  -- List / Search
+update -- Edit
+delete -- delete
+
+make new file crud.md inside src folder
+
+13. WRItiNG FIRST VIEW
+Two types of views
+-> function based views
+-> class based views
+digital marketplace
+open views.py and write your first view and import HttpResponse using
+form django.http import HttpResponse
+
+14. MAPPING URLs TO VIEWS
+open urls.py and add posts url to it and also attach 'post_home' view to it.
+
+15. IN APP URLS
+create a new file urls.py inside posts folder
+copy urls from urls.py to new urls.py and remove admin url from new one. Made some changes in new urls.py and also import 'include' in old urls.py
+
+open views.py and define some new views to apply crud.
+next open urls.py inside posts folder and add urls to it .
+
