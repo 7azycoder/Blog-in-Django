@@ -23,5 +23,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # url(r'^posts/$', post_view.post_home),
     #url(r'^posts/$', "posts.views.post_home"),
-    url(r'^posts/',include("posts.urls")),  # includes all the urls mentioned in urls.py file inside posts folder
+    url(r'^posts/',include("posts.urls",namespace="posts")),  # includes all the urls mentioned in urls.py file inside posts folder
 ]

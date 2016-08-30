@@ -139,3 +139,120 @@ copy urls from urls.py to new urls.py and remove admin url from new one. Made so
 open views.py and define some new views to apply crud.
 next open urls.py inside posts folder and add urls to it .
 
+16. TEMPLATES
+create a new folder 'templates' inside src folder
+set path for 'templates' inside settings.py as
+ 'DIRS': [os.path.join(BASE_DIR, 'templates')], inside template object
+ open views.py and modify some view to view the changes
+
+ modify urls.py inside posts folder to remove errors encountered. Done this
+
+ open views.py and add context
+ to use dictionary or context variable in a html file use {{ variable }}
+
+17. TEMPLATE CONTEXT
+ to check if user is logged in or not we use the code as
+ if request.user.is_authenticated():
+	context ={
+		"title":"My user list"
+	}
+else:
+	context = {
+		"title": "List"
+	}
+
+18. QUERYSET BASICS
+to open python shell which works with django project enter the following command
+python manage.py shell
+>>> from posts.models import Post
+>>> Post.objects.all()
+[<Post: The Hindu>]
+>>> Post.objects.filter(title="The Hindu")
+[<Post: The Hindu>]
+>>> Post.objects.filter(title__icontains="The Hindu")
+[<Post: The Hindu>]
+>>> Post.objects.filter(title__icontains="the hindu")  // icontains to ignore lowercase uppercase thing
+[<Post: The Hindu>]
+>>> Post.objects.create(title="The Times of India",content="It is the worst newspaper")
+<Post: The Times of India>
+>>> queryset = Post.objects.all()
+>>> for obj in queryset:
+...     print obj.title
+...     print obj.content
+...     print obj.updated
+...     print obj.timestamp
+...     print obj.id
+...     print obj.pk
+... 
+The Hindu
+The best newspaper of people.
+2016-08-29 19:06:33.436809+00:00
+2016-08-29 19:06:33.436910+00:00
+1
+1
+The Times of India
+It is the worst newspaper
+2016-08-30 06:16:56.025811+00:00
+2016-08-30 06:16:56.025951+00:00
+2
+2
+
+In similar manner we can add this queryset in views and pass it in the form of context like
+def post_list(request):
+	queryset = Post.objects.all()
+	context = {
+		"object_list":queryset,
+		"title":"list"
+	}	
+	return render(request,"index.html",context)
+
+Now to view it on index.html write the code as
+
+<h1> {{title}} is working </h1>
+{% for obj in object_list %}
+{{obj.title}}</br>
+{{obj.content}}</br>
+{{obj.timestamp}}</br>
+{{obj.updated}}</br>
+{{obj.id}}</br>
+{% endfor %}
+
+18. GET OBJECT OR 404 ERROR
+in views.py import get_object_or_404 using code
+from django.shortcuts import render, get_objects_or_404
+we use it to display error 404 message when some post is not found on detail page etc
+we create a new page 'post_detail.html'
+
+19. DYNAMIC URL ROUTING AND PATTERNS
+open urls.py and modify url of details page. We use regular epression for digits to view specific post. This id is passed to id parameter in post_detail in views.py to call for a specific dynamic view
+urls.py
+url(r'^(?P<id>\d+)/$', post_detail)
+
+view.py
+def post_detail(request,id = None):
+	#instance = Post.objects.get(id=3)
+	instance = get_object_or_404(Post, id=id)
+	context = {
+		"title": instance.title,
+		"instance" : instance
+	}
+	return render(request,"post_detail.html",context)
+
+20. URL LINKS AND GET ABSOLUTE URLS
+go to urls.py and pass named url to post_detail like
+ url(r'^(?P<id>\d+)/$', post_detail, name="detail"),
+
+ then go to index.html and make title as a link 
+ <a href="{% "detail" id="obj.id %}">{{ obj.title }}</a></br>
+ This is a named url
+ we can also use '/post/id/' as url
+
+next is the concept of absolute urls . We added a new fnc 'get_absolute_url' in models.py and also imported
+from django.core.urlresolvers import reverse
+we defined a absolute url then.
+we added a 'namespace' to posts link in our main urls.py file.
+A namepace is used to identify same urls within differnt apps.
+we then modified index.html to create links as
+<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a></br>
+<a href="{% url "posts:detail" id=obj.id %}">{{ obj.title }}</a></br>
+
