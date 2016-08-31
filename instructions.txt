@@ -256,3 +256,31 @@ we then modified index.html to create links as
 <a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a></br>
 <a href="{% url "posts:detail" id=obj.id %}">{{ obj.title }}</a></br>
 
+21. MODEL FORM
+Create a new file named forms.py inside trydjango19 folder alongside views.py
+Crete a PostForm model in that
+
+Create a new file post_form.html
+write form code to it.
+open views.py and import PostForm to it and modify post_create view to handle form data etc
+
+22. EDIT POSTS
+import HttpResponseRedirect on view.py . Modify post_update view. Update its url in urls.py
+We use same Model Form that we used to create posts earlier.
+
+23. DJANGO MESSAGES
+import messages into views.py using
+from django.contrib import messages
+modify post_detail.html page to contain messages template and modify post_update view to send messages.
+
+24. DELETING POSTS
+import direct in view.py using 
+from django.shortcuts import render, get_object_or_404, redirect
+modify post_delete() there also.
+Modify list route in urls.py by giving it a name 'list'
+
+25. TEMPLATES & INHERITANCE
+delete index.html
+create base.html, messages_display.html, post_list.html and modify views in views.py
+
+
